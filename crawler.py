@@ -51,7 +51,7 @@ count = 0
 
 while temp_df.shape[0] != 0:
     time.sleep(2)
-    data.append(temp_df, ignore_index=True)
+    data = data.append(temp_df, ignore_index=True)
     count += 80
     temp_df = get_player_url(url + '?offset=' + str(count))
 
