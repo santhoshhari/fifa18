@@ -1,10 +1,11 @@
 import requests
+import random
 import time
 from bs4 import BeautifulSoup
 import pandas as pd
 
 col_names = ['ID', 'Name', 'FullName', 'Age', 'Nationality', 'Club', 'Image', 'Position', 'Overall', 'Potential',
-           'Value', 'Wage', 'URL']
+             'Value', 'Wage', 'URL']
 data = pd.DataFrame(columns=col_names)
 
 
@@ -50,9 +51,9 @@ temp_df = get_player_url(url)
 count = 0
 
 while temp_df.shape[0] != 0:
-    time.sleep(2)
+    time.sleep(random.randint(2, 5))
     data = data.append(temp_df, ignore_index=True)
     count += 80
     temp_df = get_player_url(url + '?offset=' + str(count))
 
-data.to_csv('player_data.txt', encoding='utf-8')
+data.to_csv('player_data.txt', encoding='utf-8', index=False)
