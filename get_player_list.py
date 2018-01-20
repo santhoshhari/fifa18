@@ -7,11 +7,12 @@ import pandas as pd
 col_names = ['ID', 'Name', 'FullName', 'Age', 'Nationality', 'Club', 'Image', 'Position', 'Overall', 'Potential',
              'Value', 'Wage', 'URL']
 data = pd.DataFrame(columns=col_names)
+headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
 
 
 def get_player_url(url):
-    data = requests.get(url)
-    soup = BeautifulSoup(data.text, 'html.parser')
+    r = requests.get(url, headers=headers)
+    soup = BeautifulSoup(r.text, 'html.parser')
     player_image_list = soup.findAll('img', attrs={'class': 'player-check'})
     player_image = [pim['data-src'] for pim in player_image_list]
     player_id = [pim['id'] for pim in player_image_list]
@@ -22,7 +23,7 @@ def get_player_url(url):
     player_club = [pld.findAll('a')[0].text.strip() for pld in club_details]
     player_name = [pld.findAll('a')[1].text.strip() for pld in player_profile]
     player_fname = [pld.findAll('a')[1]['title'] for pld in player_profile]
-    player_url = [url + pld.findAll('a')[1]['href'] for pld in player_profile]
+    player_url = ['https://sofifa.com' + pld.findAll('a')[1]['href'] for pld in player_profile]
     player_position_list = [pld.findAll('a')[2:] for pld in player_profile]
     player_position = []
     for pplist in player_position_list:
